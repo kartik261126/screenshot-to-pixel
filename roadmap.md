@@ -1,0 +1,3 @@
+- [ ] Create role-aware portal shell and mock API/query foundation.
+- [ ] Build employee and admin screens from the supplied brief.
+- [ ] Validate access, interactions, tests, and preview diagnostics.
