@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { PortalPage } from "@/components/portal-page";
+export const Route = createFileRoute("/admin/jobs")({ head: () => ({ meta: [{ title: "Provisioning jobs · ACME Mail Portal" }, { name: "description", content: "Review mailbox provisioning operations and retries." }, { property: "og:title", content: "Provisioning jobs · ACME Mail Portal" }, { property: "og:description", content: "Review mailbox provisioning operations and retries." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: () => <PortalPage page="jobs" /> });

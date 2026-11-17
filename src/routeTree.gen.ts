@@ -10,33 +10,185 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as DirectoryRouteImport } from './routes/directory'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as AdminAuditRouteImport } from './routes/admin.audit'
+import { Route as AdminEmployeesRouteImport } from './routes/admin.employees'
+import { Route as AdminHealthRouteImport } from './routes/admin.health'
+import { Route as AdminJobsRouteImport } from './routes/admin.jobs'
+import { Route as AdminListsRouteImport } from './routes/admin.lists'
+import { Route as AdminMailboxesRouteImport } from './routes/admin.mailboxes'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminEmployeesIdRouteImport } from './routes/admin.employees.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DirectoryRoute = DirectoryRouteImport.update({
+  id: '/directory',
+  path: '/directory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAuditRoute = AdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEmployeesRoute = AdminEmployeesRouteImport.update({
+  id: '/employees',
+  path: '/employees',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminHealthRoute = AdminHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminJobsRoute = AdminJobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminListsRoute = AdminListsRouteImport.update({
+  id: '/lists',
+  path: '/lists',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMailboxesRoute = AdminMailboxesRouteImport.update({
+  id: '/mailboxes',
+  path: '/mailboxes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEmployeesIdRoute = AdminEmployeesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminEmployeesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/directory': typeof DirectoryRoute
+  '/notifications': typeof NotificationsRoute
+  '/settings': typeof SettingsRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/employees': typeof AdminEmployeesRouteWithChildren
+  '/admin/health': typeof AdminHealthRoute
+  '/admin/jobs': typeof AdminJobsRoute
+  '/admin/lists': typeof AdminListsRoute
+  '/admin/mailboxes': typeof AdminMailboxesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/employees/$id': typeof AdminEmployeesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/directory': typeof DirectoryRoute
+  '/notifications': typeof NotificationsRoute
+  '/settings': typeof SettingsRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/employees': typeof AdminEmployeesRouteWithChildren
+  '/admin/health': typeof AdminHealthRoute
+  '/admin/jobs': typeof AdminJobsRoute
+  '/admin/lists': typeof AdminListsRoute
+  '/admin/mailboxes': typeof AdminMailboxesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/employees/$id': typeof AdminEmployeesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/directory': typeof DirectoryRoute
+  '/notifications': typeof NotificationsRoute
+  '/settings': typeof SettingsRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/employees': typeof AdminEmployeesRouteWithChildren
+  '/admin/health': typeof AdminHealthRoute
+  '/admin/jobs': typeof AdminJobsRoute
+  '/admin/lists': typeof AdminListsRoute
+  '/admin/mailboxes': typeof AdminMailboxesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/employees/$id': typeof AdminEmployeesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/directory'
+    | '/notifications'
+    | '/settings'
+    | '/admin/audit'
+    | '/admin/employees'
+    | '/admin/health'
+    | '/admin/jobs'
+    | '/admin/lists'
+    | '/admin/mailboxes'
+    | '/admin/settings'
+    | '/admin/employees/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/directory'
+    | '/notifications'
+    | '/settings'
+    | '/admin/audit'
+    | '/admin/employees'
+    | '/admin/health'
+    | '/admin/jobs'
+    | '/admin/lists'
+    | '/admin/mailboxes'
+    | '/admin/settings'
+    | '/admin/employees/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/directory'
+    | '/notifications'
+    | '/settings'
+    | '/admin/audit'
+    | '/admin/employees'
+    | '/admin/health'
+    | '/admin/jobs'
+    | '/admin/lists'
+    | '/admin/mailboxes'
+    | '/admin/settings'
+    | '/admin/employees/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  DirectoryRoute: typeof DirectoryRoute
+  NotificationsRoute: typeof NotificationsRoute
+  SettingsRoute: typeof SettingsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +200,133 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/directory': {
+      id: '/directory'
+      path: '/directory'
+      fullPath: '/directory'
+      preLoaderRoute: typeof DirectoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/audit': {
+      id: '/admin/audit'
+      path: '/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AdminAuditRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/employees': {
+      id: '/admin/employees'
+      path: '/employees'
+      fullPath: '/admin/employees'
+      preLoaderRoute: typeof AdminEmployeesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/health': {
+      id: '/admin/health'
+      path: '/health'
+      fullPath: '/admin/health'
+      preLoaderRoute: typeof AdminHealthRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/jobs': {
+      id: '/admin/jobs'
+      path: '/jobs'
+      fullPath: '/admin/jobs'
+      preLoaderRoute: typeof AdminJobsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/lists': {
+      id: '/admin/lists'
+      path: '/lists'
+      fullPath: '/admin/lists'
+      preLoaderRoute: typeof AdminListsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/mailboxes': {
+      id: '/admin/mailboxes'
+      path: '/mailboxes'
+      fullPath: '/admin/mailboxes'
+      preLoaderRoute: typeof AdminMailboxesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/employees/$id': {
+      id: '/admin/employees/$id'
+      path: '/$id'
+      fullPath: '/admin/employees/$id'
+      preLoaderRoute: typeof AdminEmployeesIdRouteImport
+      parentRoute: typeof AdminEmployeesRoute
+    }
   }
 }
 
+interface AdminEmployeesRouteChildren {
+  AdminEmployeesIdRoute: typeof AdminEmployeesIdRoute
+}
+
+const AdminEmployeesRouteChildren: AdminEmployeesRouteChildren = {
+  AdminEmployeesIdRoute: AdminEmployeesIdRoute,
+}
+
+const AdminEmployeesRouteWithChildren = AdminEmployeesRoute._addFileChildren(
+  AdminEmployeesRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminAuditRoute: typeof AdminAuditRoute
+  AdminEmployeesRoute: typeof AdminEmployeesRouteWithChildren
+  AdminHealthRoute: typeof AdminHealthRoute
+  AdminJobsRoute: typeof AdminJobsRoute
+  AdminListsRoute: typeof AdminListsRoute
+  AdminMailboxesRoute: typeof AdminMailboxesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAuditRoute: AdminAuditRoute,
+  AdminEmployeesRoute: AdminEmployeesRouteWithChildren,
+  AdminHealthRoute: AdminHealthRoute,
+  AdminJobsRoute: AdminJobsRoute,
+  AdminListsRoute: AdminListsRoute,
+  AdminMailboxesRoute: AdminMailboxesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  DirectoryRoute: DirectoryRoute,
+  NotificationsRoute: NotificationsRoute,
+  SettingsRoute: SettingsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

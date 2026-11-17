@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+# Project architecture
+- Keep the portal frontend-only: typed mock resource modules feed TanStack Query, so a future API swap remains isolated and no backend or mailbox content is introduced.
