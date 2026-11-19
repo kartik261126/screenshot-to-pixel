@@ -19,7 +19,8 @@ export function PortalSessionProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<PortalSession["theme"]>("Light");
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "Dark" || (theme === "System" && window.matchMedia("(prefers-color-scheme: dark)").matches));
+    const systemDark = theme === "System" && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.classList.toggle("dark", theme === "Dark" || systemDark);
   }, [theme]);
 
   return <PortalContext.Provider value={{ role, setRole, signedIn, signIn: (nextRole) => { setRole(nextRole); setSignedIn(true); }, signOut: () => setSignedIn(false), theme, setTheme }}>{children}</PortalContext.Provider>;

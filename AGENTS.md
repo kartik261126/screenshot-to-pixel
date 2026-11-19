@@ -31,3 +31,4 @@ use the editor.
 
 # Project architecture
 - Keep the portal frontend-only: typed mock resource modules feed TanStack Query, so a future API swap remains isolated and no backend or mailbox content is introduced.
+- Keep shared portal screens role-aware and backed only by the typed mock API/query modules, so route access and data sources stay consistent.
