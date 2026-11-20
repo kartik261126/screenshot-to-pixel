@@ -219,7 +219,48 @@ function Mailboxes({ users, mailboxes, loading, onRetry }: { users: User[]; mail
   const [highUsage, setHighUsage] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const filtered = mailboxes.filter((item) => !highUsage || item.usedGb / item.quotaGb > 0.9);
-  return <><PageHeading title="Mailboxes" description="Mailbox status, provisioning and storage allocations." action={<Button onClick={() => toast.info("Create a mailbox from an employee record.")}><Plus/>Create mailbox</Button>}/><label className="mb-4 flex items-center gap-2 text-sm"><Switch checked={highUsage} onCheckedChange={setHighUsage}/>Above 90% of quota</label>{loading ? <LoadingLine/> : <div className="overflow-x-auto border border-border bg-card"><table className="w-full min-w-[720px] text-left text-sm"><thead className="border-b border-border bg-muted/50 text-xs text-muted-foreground"><tr>{["Employee", "Email", "Status", "Quota", "Used", "Provisioning", "Actions"].map((label) => <th className="px-4 py-3 font-medium" key={label}>{label}</th>)}</tr></thead><tbody className="divide-y divide-border">{filtered.map((mailbox) => { const user = users.find((item) => item.id === mailbox.userId); return <tr key={mailbox.id} className="cursor-pointer hover:bg-muted/30" onClick={() => setSelected(mailbox.id)}><td className="px-4 py-3 font-medium">{user?.fullName ?? mailbox.userId}</td><td className="px-4 py-3">{mailbox.address}</td><td className="px-4 py-3"><Status value={mailbox.status}/></td><td className="px-4 py-3">{mailbox.quotaGb} GB</td><td className="px-4 py-3"><div className="flex items-center gap-2">{mailbox.usedGb} GB<div className="h-1.5 w-14 bg-muted"><div className={`h-full ${mailbox.usedGb / mailbox.quotaGb > 0.9 ? "bg-destructive" : "bg-primary"}`} style={{ width: `${Math.min(100, mailbox.usedGb / mailbox.quotaGb * 100)}%` }}/></div></td><td className="px-4 py-3"><Status value={mailbox.provisioning}/></td><td className="px-4 py-3"><Button variant="outline" size="sm" onClick={(event) => { event.stopPropagation(); onRetry(mailbox.id); }}><RefreshCw/>Retry</Button></td></tr>; })}</tbody></table>{filtered.length === 0 && <Empty>No mailboxes match this filter.</Empty>}<div className="border-t border-border px-4 py-3 text-xs text-muted-foreground">Showing {filtered.length} of {mailboxes.length} mailboxes</div></div>}<Sheet open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}><SheetContent><SheetHeader><SheetTitle>Mailbox details</SheetTitle><SheetDescription>Allocation and provisioning status.</SheetDescription></SheetHeader>{(() => { const mailbox = mailboxes.find((item) => item.id === selected); if (!mailbox) return null; return <div className="mt-7 space-y-5"><Detail label="Address" value={mailbox.address}/><Detail label="Aliases" value={mailbox.aliases.join(", ") || "None"}/><Detail label="Status" value={<Status value={mailbox.status}/>}/><Detail label="Storage" value={`${mailbox.usedGb} GB of ${mailbox.quotaGb} GB`}/><Detail label="Provisioning" value={<Status value={mailbox.provisioning}/>}/><div className="space-y-2 border-t border-border pt-4"><Button className="w-full" variant="outline" onClick={() => toast.info("Quota changes are audit-logged.")}>Change quota</Button><Button className="w-full" variant="outline" onClick={() => onRetry(mailbox.id)}><RefreshCw/>Retry provisioning</Button><Button className="w-full" variant="ghost" onClick={() => toast.info("Mailbox status is current.")}>View status</Button></div><p className="text-xs text-muted-foreground">Destructive changes require confirmation and are audit-logged.</p></div>; })()}</SheetContent></Sheet></>;
+  return (
+    <>
+      <PageHeading title="Mailboxes" description="Mailbox status, provisioning and storage allocations." action={<Button onClick={() => toast.info("Create a mailbox from an employee record.")}><Plus />Create mailbox</Button>} />
+      <label className="mb-4 flex items-center gap-2 text-sm"><Switch checked={highUsage} onCheckedChange={setHighUsage} />Above 90% of quota</label>
+      {loading ? <LoadingLine /> : (
+        <div className="overflow-x-auto border border-border bg-card">
+          <table className="w-full min-w-[720px] text-left text-sm">
+            <thead className="border-b border-border bg-muted/50 text-xs text-muted-foreground"><tr>{["Employee", "Email", "Status", "Quota", "Used", "Provisioning", "Actions"].map((label) => <th className="px-4 py-3 font-medium" key={label}>{label}</th>)}</tr></thead>
+            <tbody className="divide-y divide-border">
+              {filtered.map((mailbox) => {
+                const user = users.find((item) => item.id === mailbox.userId);
+                const usagePercent = Math.min(100, (mailbox.usedGb / mailbox.quotaGb) * 100);
+                return (
+                  <tr key={mailbox.id} className="cursor-pointer hover:bg-muted/30" onClick={() => setSelected(mailbox.id)}>
+                    <td className="px-4 py-3 font-medium">{user?.fullName ?? mailbox.userId}</td>
+                    <td className="px-4 py-3">{mailbox.address}</td>
+                    <td className="px-4 py-3"><Status value={mailbox.status} /></td>
+                    <td className="px-4 py-3">{mailbox.quotaGb} GB</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2">{mailbox.usedGb} GB<div className="h-1.5 w-14 bg-muted"><div className={`h-full ${usagePercent > 90 ? "bg-destructive" : "bg-primary"}`} style={{ width: `${usagePercent}%` }} /></div></div></td>
+                    <td className="px-4 py-3"><Status value={mailbox.provisioning} /></td>
+                    <td className="px-4 py-3"><Button variant="outline" size="sm" onClick={(event) => { event.stopPropagation(); onRetry(mailbox.id); }}><RefreshCw />Retry</Button></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          {filtered.length === 0 && <Empty>No mailboxes match this filter.</Empty>}
+          <div className="border-t border-border px-4 py-3 text-xs text-muted-foreground">Showing {filtered.length} of {mailboxes.length} mailboxes</div>
+        </div>
+      )}
+      <Sheet open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}>
+        <SheetContent>
+          <SheetHeader><SheetTitle>Mailbox details</SheetTitle><SheetDescription>Allocation and provisioning status.</SheetDescription></SheetHeader>
+          {(() => {
+            const mailbox = mailboxes.find((item) => item.id === selected);
+            if (!mailbox) return null;
+            return <div className="mt-7 space-y-5"><Detail label="Address" value={mailbox.address} /><Detail label="Aliases" value={mailbox.aliases.join(", ") || "None"} /><Detail label="Status" value={<Status value={mailbox.status} />} /><Detail label="Storage" value={`${mailbox.usedGb} GB of ${mailbox.quotaGb} GB`} /><Detail label="Provisioning" value={<Status value={mailbox.provisioning} />} /><div className="space-y-2 border-t border-border pt-4"><Button className="w-full" variant="outline" onClick={() => toast.info("Quota changes are audit-logged.")}>Change quota</Button><Button className="w-full" variant="outline" onClick={() => onRetry(mailbox.id)}><RefreshCw />Retry provisioning</Button><Button className="w-full" variant="ghost" onClick={() => toast.info("Mailbox status is current.")}>View status</Button></div><p className="text-xs text-muted-foreground">Destructive changes require confirmation and are audit-logged.</p></div>;
+          })()}
+        </SheetContent>
+      </Sheet>
+    </>
+  );
 }
 
 function DistributionLists({ lists, users, selected, setSelected, onCreate, onMember }: { lists: Awaited<ReturnType<typeof import("@/api/lists").getLists>>; users: User[]; selected: string; setSelected: (id: string) => void; onCreate: (name: string, email: string) => void; onMember: (id: string, userId: string, operation: "add" | "remove") => void }) {

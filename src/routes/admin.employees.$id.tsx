@@ -1,3 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PortalPage } from "@/components/portal-page";
-export const Route = createFileRoute("/admin/employees/$id")({ head: () => ({ meta: [{ title: "Employee record · ACME Mail Portal" }, { name: "description", content: "Review employee account details and service history." }, { property: "og:title", content: "Employee record · ACME Mail Portal" }, { property: "og:description", content: "Review employee account details and service history." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: () => <PortalPage page="employee-detail" /> });
+export const Route = createFileRoute("/admin/employees/$id")({
+  head: () => ({ meta: [{ title: "Employee record · ACME Mail Portal" }, { name: "description", content: "Review employee account details and service history." }, { property: "og:title", content: "Employee record · ACME Mail Portal" }, { property: "og:description", content: "Review employee account details and service history." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  component: EmployeeRecord,
+});
+
+function EmployeeRecord() {
+  const { id } = Route.useParams();
+  return <PortalPage page="employee-detail" userId={id} />;
+}
